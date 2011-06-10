@@ -93,10 +93,10 @@ public class VerifyProcessor extends AbstractWordOperations
 			totalScore += score;
 		}
 
-		//		// topic-units in AU page
-		//		int scoreInAuPage = evaluateTopicUnitsInAuPage(au,
-		//				statement.getAllWordsInTopicUnits());
-		//		totalScore += scoreInAuPage;
+		// topic-units in AU page
+		int scoreInAuPage = evaluateTopicUnitsInAuPage(au,
+				statement.getAllWordsInTopicUnits());
+		totalScore += scoreInAuPage;
 
 		return totalScore;
 	}
