@@ -54,7 +54,7 @@ public class VerifyProcessor extends AbstractWordOperations
 		// http://en.wikipedia.org/wiki/China
 		List<Entry<TreeSet<String>, List<List<String>>>> topicUnitsWithMatchedPageContentList = getMatchedPagesForEachStatement(statement);
 
-		int maxScore = -1;
+		int maxScore = 0;
 		String theHighestScoredAu = null;
 		for (String au : statement.getAlternativeUnits())
 		{
@@ -92,9 +92,9 @@ public class VerifyProcessor extends AbstractWordOperations
 		}
 
 		// topic-units in AU page
-//		int scoreInAuPage = evaluateTopicUnitsInAuPage(au,
-//				statement.getAllWordsInTopicUnits());
-//		totalScore += scoreInAuPage;
+		//		int scoreInAuPage = evaluateTopicUnitsInAuPage(au,
+		//				statement.getAllWordsInTopicUnits());
+		//		totalScore += scoreInAuPage;
 
 		return totalScore;
 	}
@@ -199,8 +199,8 @@ public class VerifyProcessor extends AbstractWordOperations
 			}
 		}
 
-		int finalScore = scorePage(topicUnits,
-				postingListOfParagraphs, stemmedWordsInAu, POWER_BASE_TU);
+		int finalScore = scorePage(topicUnits, postingListOfParagraphs,
+				stemmedWordsInAu, POWER_BASE_TU);
 
 		return finalScore;
 	}
@@ -210,12 +210,12 @@ public class VerifyProcessor extends AbstractWordOperations
 			String[] stemmedWordsInAu, int powerBase)
 	{
 		// trying begin with the longest ones
-//		Collections.reverse(powersetOfTopicUnits);
-//		if (powersetOfTopicUnits.isEmpty())
-//		{
-//			List<String> emptyList = Collections.emptyList();
-//			powersetOfTopicUnits.add(emptyList);
-//		}
+		//		Collections.reverse(powersetOfTopicUnits);
+		//		if (powersetOfTopicUnits.isEmpty())
+		//		{
+		//			List<String> emptyList = Collections.emptyList();
+		//			powersetOfTopicUnits.add(emptyList);
+		//		}
 
 		int finalScore = 0;
 		for (Map<String, List<Integer>> postingListOfOneParagraph : postingListOfParagraphs)
@@ -231,8 +231,8 @@ public class VerifyProcessor extends AbstractWordOperations
 					break;
 				}
 			}*/
-			int score = matchWordsInOneParagraph(topicUnits,
-					stemmedWordsInAu, postingListOfOneParagraph, powerBase);
+			int score = matchWordsInOneParagraph(topicUnits, stemmedWordsInAu,
+					postingListOfOneParagraph, powerBase);
 			finalScore += score;
 		}
 		return finalScore;
@@ -243,30 +243,30 @@ public class VerifyProcessor extends AbstractWordOperations
 			Map<String, List<Integer>> postingListOfOneParagraph, int powerBase)
 	{
 		// AU must exist!
-		for(String wordInAu : stemmedWordsInAu)
+		for (String wordInAu : stemmedWordsInAu)
 		{
-			if(!postingListOfOneParagraph.containsKey(wordInAu))
+			if (!postingListOfOneParagraph.containsKey(wordInAu))
 			{
 				return 0;
 			}
 		}
-		
+
 		int numberOfTuExist = 0;
 		int frequancySumOfTus = 0;
-		for(String tu : topicUnits)
+		for (String tu : topicUnits)
 		{
 			List<Integer> postingOfTu = postingListOfOneParagraph.get(tu);
-			if(postingOfTu != null)
+			if (postingOfTu != null)
 			{
 				// there exists such TU in the paragraph
 				numberOfTuExist++;
 				frequancySumOfTus += postingOfTu.size();
 			}
 		}
-		
+
 		return (int) (frequancySumOfTus * Math.pow(powerBase, numberOfTuExist));
 	}
-	
+
 	/*private Integer matchWordsInOneParagraph(TreeSet<String> topicUnits,
 			String[] stemmedWordsInAu,
 			Map<String, List<Integer>> postingListOfOneParagraph, int powerBase)
