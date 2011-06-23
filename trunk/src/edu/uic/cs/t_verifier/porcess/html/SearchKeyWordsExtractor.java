@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
-import org.htmlparser.Parser;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
 import org.htmlparser.filters.TagNameFilter;
@@ -97,7 +96,7 @@ public class SearchKeyWordsExtractor
 		}
 	}
 
-	private Parser parser = new Parser();
+	private PoliteParser parser = new PoliteParser();
 
 	public SearchKeyWords getStandardSearchKeyWords(String queryWords)
 	{
@@ -125,6 +124,7 @@ public class SearchKeyWordsExtractor
 
 		try
 		{
+			System.out.println(url);
 			parser.setResource(url);
 
 			// this means the input query words can't exactly match a page 

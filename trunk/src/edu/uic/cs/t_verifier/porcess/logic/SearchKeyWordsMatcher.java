@@ -59,66 +59,62 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 		}
 	}
 
-	/*public static void main(String[] args)
-	{
-		NoSubStringTreeSet set = new NoSubStringTreeSet();
-		set.add(" b c d");
-		set.add("a b c d");
-		set.add("a b c d");
+	/*
+	 * public static void main(String[] args) { NoSubStringTreeSet set = new
+	 * NoSubStringTreeSet(); set.add(" b c d"); set.add("a b c d");
+	 * set.add("a b c d");
+	 * 
+	 * set.add(" c d"); set.add(" c d e");
+	 * 
+	 * TreeSet<String> other = new TreeSet<String>(); other.add(" b c d");
+	 * other.add(" c d"); other.add(" c d e");
+	 * 
+	 * set.addAll(other);
+	 * 
+	 * System.out.println(set); }
+	 */
 
-		set.add(" c d");
-		set.add(" c d e");
-
-		TreeSet<String> other = new TreeSet<String>();
-		other.add(" b c d");
-		other.add(" c d");
-		other.add(" c d e");
-
-		set.addAll(other);
-
-		System.out.println(set);
-	}*/
-
-	public String matchAlternativeUnit(String au)
-	{
-		au = au.trim();
-		SearchKeyWords matchedKeyWords = searchKeyWordsExtractor
-				.getStandardSearchKeyWords(au);
-		if (matchedKeyWords != null && matchedKeyWords.isCertainly())
-		{
-			return matchedKeyWords.getCertainPageUrl();
-		}
-
-		// remove stop-words and try again
-		au = StopWords.trimStopWordsInBothSides(au);
-		matchedKeyWords = searchKeyWordsExtractor.getStandardSearchKeyWords(au);
-		if (matchedKeyWords != null && matchedKeyWords.isCertainly())
-		{
-			return matchedKeyWords.getCertainPageUrl();
-		}
-
-		return null;
-	}
-
+	// public String matchAlternativeUnit(String au)
+	// {
+	// au = au.trim();
+	// SearchKeyWords matchedKeyWords = searchKeyWordsExtractor
+	// .getStandardSearchKeyWords(au);
+	// if (matchedKeyWords != null && matchedKeyWords.isCertainly())
+	// {
+	// return matchedKeyWords.getCertainPageUrl();
+	// }
+	//
+	// // remove stop-words and try again
+	// au = StopWords.trimStopWordsInBothSides(au);
+	// matchedKeyWords = searchKeyWordsExtractor.getStandardSearchKeyWords(au);
+	// if (matchedKeyWords != null && matchedKeyWords.isCertainly())
+	// {
+	// return matchedKeyWords.getCertainPageUrl();
+	// }
+	//
+	// return null;
+	// }
 	public Map<String, String> matchTopicUnitsForStatement(Statement statement)
 	{
 		Collection<String> topicUnits = statement.getTopicUnits();
+		List<String> aus = statement.getAlternativeUnits();
 
-		return processAllTopicUnitsInStatement(topicUnits);
+		return processAllTopicUnitsInStatement(topicUnits, aus);
 	}
 
 	Map<String, String> processAllTopicUnitsInStatement(
-			Collection<String> topicUnits)
+			Collection<String> topicUnits, List<String> aus)
 	{
 		// topic units waiting for mathcing
 		NoSubStringTreeSet topicUnitsRemovedStopWords = new NoSubStringTreeSet();
 		for (String topicUnit : topicUnits)
 		{
+			topicUnit = removeSaxonGenitive(topicUnit);
 			topicUnitsRemovedStopWords.add(StopWords
 					.trimStopWordsInBothSides(topicUnit));
 		}
 
-		////////////////////////////////////////////////////////////////////////
+		// //////////////////////////////////////////////////////////////////////
 		Map<String, String> result = new HashMap<String, String>();
 
 		HashSet<String> allMatchedTopicUnits = new HashSet<String>();
@@ -155,12 +151,12 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 						Set<String> otherTopicUnits = new HashSet<String>(
 								topicUnitsRemovedStopWords);
 						otherTopicUnits.remove(topicUnit);
-						String url = findTheMostMatchedAmbiguousEntry(
-								ambiguousEntries, otherTopicUnits);
-						System.out.println("?" + url);
+						List<String> urls = findTheMostMatchedAmbiguousEntry(
+								ambiguousEntries, otherTopicUnits, aus);
 
-						if (url != null)
+						for (String url : urls)
 						{
+							System.out.println("? " + url);
 							result.put(topicUnit, url);
 						}
 					}
@@ -184,16 +180,24 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 		return result;
 	}
 
-	private String findTheMostMatchedAmbiguousEntry(
-			List<AmbiguityEntry> ambiguousEntries, Set<String> otherTopicUnits)
+	private List<String> findTheMostMatchedAmbiguousEntry(
+			List<AmbiguityEntry> ambiguousEntries,
+			Collection<String> otherTopicUnits, List<String> aus)
 	{
 		int maxScore = 0;
-		String maxScoreUrl = null;
+		List<String> maxScoreUrls = new ArrayList<String>();
 		for (AmbiguityEntry ambiguityEntry : ambiguousEntries)
 		{
 			int count = 0;
 			String description = ambiguityEntry.getDescription();
 			List<String> nonstopStemmedWordsInDesc = splitIntoNoneStopStemmedWords(description);
+
+			if (otherTopicUnits.isEmpty())
+			{
+				// if there's no TUs, use AUs do the matching
+				otherTopicUnits = aus;
+			}
+
 			for (String topicUnit : otherTopicUnits)
 			{
 				if (isNoneStopWord(topicUnit)
@@ -206,12 +210,18 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 			if (count > maxScore)
 			{
 				maxScore = count;
-				maxScoreUrl = SearchKeyWords.WIKI_ADDRESS_PREFIX
-						+ ambiguityEntry.getKeyWord();
+				maxScoreUrls.clear();
+				maxScoreUrls.add(SearchKeyWords.WIKI_ADDRESS_PREFIX
+						+ ambiguityEntry.getKeyWord());
+			}
+			else if (count != 0 && count == maxScore)
+			{
+				maxScoreUrls.add(SearchKeyWords.WIKI_ADDRESS_PREFIX
+						+ ambiguityEntry.getKeyWord());
 			}
 		}
 
-		return maxScoreUrl;
+		return maxScoreUrls;
 	}
 
 	private String matchedTopicUnit(String topicUnit, SearchKeyWords keyWords)

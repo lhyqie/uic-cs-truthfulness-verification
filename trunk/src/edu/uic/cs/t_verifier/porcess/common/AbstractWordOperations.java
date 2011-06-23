@@ -1,9 +1,9 @@
 package edu.uic.cs.t_verifier.porcess.common;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+//import java.util.Collection;
+//import java.util.Collections;
+//import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +19,11 @@ public abstract class AbstractWordOperations
 
 	private PorterStemmer stemmer = new PorterStemmer();
 
+	protected String removeSaxonGenitive(String phrase)
+	{
+		return phrase.replace("'s ", " ").replace("s' ", "s ");
+	}
+	
 	protected List<String> splitIntoNoneStopStemmedWords(String paragraph)
 	{
 		// remove all commas in the paragraph
@@ -86,7 +91,7 @@ public abstract class AbstractWordOperations
 		return word;
 	}
 
-	private static class PowersetComparator implements Comparator<List<String>>
+	/*private static class PowersetComparator implements Comparator<List<String>>
 	{
 		@Override
 		public int compare(List<String> one, List<String> another)
@@ -142,7 +147,7 @@ public abstract class AbstractWordOperations
 		}
 
 		return ps;
-	}
+	}*/
 
 	protected List<Map<String, List<Integer>>> constructPostingList(
 			List<List<String>> stemmedParagraphs)

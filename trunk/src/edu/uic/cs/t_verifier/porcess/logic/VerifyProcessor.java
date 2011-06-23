@@ -1,13 +1,11 @@
 package edu.uic.cs.t_verifier.porcess.logic;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeSet;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -17,7 +15,7 @@ import edu.uic.cs.t_verifier.porcess.html.PageContentExtractor;
 
 public class VerifyProcessor extends AbstractWordOperations
 {
-	private static final int POWER_BASE_AU = 2;
+	//	private static final int POWER_BASE_AU = 2;
 	private static final int POWER_BASE_TU = 10;
 	private SearchKeyWordsMatcher keyWordsMatcher = new SearchKeyWordsMatcher();
 	private PageContentExtractor pageContentExtractor = new PageContentExtractor();
@@ -94,14 +92,14 @@ public class VerifyProcessor extends AbstractWordOperations
 		}
 
 		// topic-units in AU page
-		int scoreInAuPage = evaluateTopicUnitsInAuPage(au,
-				statement.getAllWordsInTopicUnits());
-		totalScore += scoreInAuPage;
+//		int scoreInAuPage = evaluateTopicUnitsInAuPage(au,
+//				statement.getAllWordsInTopicUnits());
+//		totalScore += scoreInAuPage;
 
 		return totalScore;
 	}
 
-	private int evaluateTopicUnitsInAuPage(String au, TreeSet<String> topicUnits)
+	/*private int evaluateTopicUnitsInAuPage(String au, TreeSet<String> topicUnits)
 	{
 
 		String pageUrlForAu = keyWordsMatcher.matchAlternativeUnit(au);
@@ -121,15 +119,15 @@ public class VerifyProcessor extends AbstractWordOperations
 				new String[] {}, POWER_BASE_AU);
 
 		return score;
-	}
+	}*/
 
 	private int evaluateEachAlternativeUnitInOnePage(String au,
 			TreeSet<String> topicUnits, List<List<String>> stemmedParagraphs)
 	{
-		List<List<String>> powersetOfTopicUnits = powerset(topicUnits, false);
+		// List<List<String>> powersetOfTopicUnits = powerset(topicUnits, false);
 		List<Map<String, List<Integer>>> postingListOfParagraphs = constructPostingList(stemmedParagraphs);
 
-		int score = countScoreForEachAlternativeUnit(au, powersetOfTopicUnits,
+		int score = countScoreForEachAlternativeUnit(au, topicUnits,
 				postingListOfParagraphs);
 
 		return score;
@@ -189,7 +187,7 @@ public class VerifyProcessor extends AbstractWordOperations
 	}*/
 
 	private int countScoreForEachAlternativeUnit(String au,
-			List<List<String>> powersetOfTopicUnits,
+			TreeSet<String> topicUnits,
 			List<Map<String, List<Integer>>> postingListOfParagraphs)
 	{
 		// AU may contains more than one word
@@ -201,36 +199,28 @@ public class VerifyProcessor extends AbstractWordOperations
 			}
 		}
 
-		int finalScore = scorePage(powersetOfTopicUnits,
+		int finalScore = scorePage(topicUnits,
 				postingListOfParagraphs, stemmedWordsInAu, POWER_BASE_TU);
 
 		return finalScore;
 	}
 
-	private int scorePage(List<List<String>> powersetOfTopicUnits,
+	private int scorePage(TreeSet<String> topicUnits,
 			List<Map<String, List<Integer>>> postingListOfParagraphs,
 			String[] stemmedWordsInAu, int powerBase)
 	{
 		// trying begin with the longest ones
-		Collections.reverse(powersetOfTopicUnits);
-		if (powersetOfTopicUnits.isEmpty())
-		{
-			List<String> emptyList = Collections.emptyList();
-			powersetOfTopicUnits.add(emptyList);
-		}
+//		Collections.reverse(powersetOfTopicUnits);
+//		if (powersetOfTopicUnits.isEmpty())
+//		{
+//			List<String> emptyList = Collections.emptyList();
+//			powersetOfTopicUnits.add(emptyList);
+//		}
 
 		int finalScore = 0;
 		for (Map<String, List<Integer>> postingListOfOneParagraph : postingListOfParagraphs)
 		{
-			//			if (stemmedAu.equals("852")
-			//					&& postingListOfOneParagraph
-			//							.toString()
-			//							.equals("{disarma=[182], osaka=[19], servic=[23], jean-bertrand=[148], airport=[18, 58], open=[21], 150 km=[82], 1977=[42], assault=[93], year=[102], border=[193], pine=[66], heather=[121], estonia=[157], ban=[95, 96], elect=[146], invas=[141], internat=[17, 57], transfer=[24], respons=[195], mexican=[171], jose=[167], wollemi=[65, 74], raul=[175], canyon=[79], board=[53], wollemia=[63], 28=[152, 165], threaten=[185], largest=[84], 3=[1], peopl=[6, 52, 163], soldier=[116], 737=[50], gorg=[73], 5=[28], remot=[71], 4=[14], david=[80], 8=[44], impair=[124], citi=[85], nobl=[81], home=[38], legitim=[145], america=[128, 132], 19=[135], bloodless=[140], john=[35], 17=[119], contest=[125], 16=[104], 13=[87], itami=[25], cabramatta=[34], de=[177], 1995=[133], –=[2, 15, 29, 45, 62, 88, 105, 120, 136, 153, 166, 180], unscom=[188], presid=[89], american=[137], gortari=[178], republ=[7], rape=[112], salina=[176], louis=[109], crisi=[183], mp=[33], previous=[67], park=[76], british=[115], ms=[156], 427=[48], flight=[47], 10=[61, 101], jensen=[110], russia=[5], kansai=[16, 26], september–octob=[179], weapon=[12, 94, 98], intern=[22], deploi=[191, 197], south=[30, 77], tour=[107], aristid=[149], survivor=[59], kill=[161], shot=[37], baltic=[159], boe=[49], hear=[123], cold=[3], three=[114], power=[150], ruiz=[169], massieu=[170], crash=[54], de-target=[10], china=[8], live=[70], whiteston=[122, 130], murder=[113], manufactur=[97], sink=[158], period=[100], rainforest=[72], nation=[75], cooper=[187], usair=[46], sign=[92], entitl=[129], discov=[69], newman=[36], cypru=[117], pittsburgh=[56], australia=[39, 83], wale=[31, 78], restor=[144], car=[154], stop=[186], 132=[51], inspector=[189], bill=[90], state=[32], clinton=[91], stage=[139], war=[4], troop=[138, 192, 198], politician=[172], japan=[20], order=[143, 174], leader=[147], haiti=[142], 852=[162], ferri=[155], septemb=[0, 13, 27, 43, 60, 86, 103, 118, 134, 151, 164], francisco=[168], sea=[160], win=[126], polit=[40], iraq=[181, 184], begin=[190, 196], abduct=[111], guid=[108], nobili=[64], nuclear=[11], agre=[9], assassin=[41, 173], fossil=[68], featur=[99], danish=[106], approach=[55], kuwait=[194, 199], miss=[127, 131]}"))
-			//			{
-			//				System.out.println(postingListOfOneParagraph);
-			//			}
-
-			Integer score = null;
+			/*Integer score = null;
 			for (List<String> setOfTopicUnits : powersetOfTopicUnits)
 			{
 				score = matchWordsInOneParagraph(setOfTopicUnits,
@@ -240,14 +230,44 @@ public class VerifyProcessor extends AbstractWordOperations
 				{
 					break;
 				}
-			}
-
-			finalScore += ((score != null) ? score.intValue() : 0);
+			}*/
+			int score = matchWordsInOneParagraph(topicUnits,
+					stemmedWordsInAu, postingListOfOneParagraph, powerBase);
+			finalScore += score;
 		}
 		return finalScore;
 	}
 
-	private Integer matchWordsInOneParagraph(List<String> setOfTopicUnits,
+	private int matchWordsInOneParagraph(TreeSet<String> topicUnits,
+			String[] stemmedWordsInAu,
+			Map<String, List<Integer>> postingListOfOneParagraph, int powerBase)
+	{
+		// AU must exist!
+		for(String wordInAu : stemmedWordsInAu)
+		{
+			if(!postingListOfOneParagraph.containsKey(wordInAu))
+			{
+				return 0;
+			}
+		}
+		
+		int numberOfTuExist = 0;
+		int frequancySumOfTus = 0;
+		for(String tu : topicUnits)
+		{
+			List<Integer> postingOfTu = postingListOfOneParagraph.get(tu);
+			if(postingOfTu != null)
+			{
+				// there exists such TU in the paragraph
+				numberOfTuExist++;
+				frequancySumOfTus += postingOfTu.size();
+			}
+		}
+		
+		return (int) (frequancySumOfTus * Math.pow(powerBase, numberOfTuExist));
+	}
+	
+	/*private Integer matchWordsInOneParagraph(TreeSet<String> topicUnits,
 			String[] stemmedWordsInAu,
 			Map<String, List<Integer>> postingListOfOneParagraph, int powerBase)
 	{
@@ -285,7 +305,7 @@ public class VerifyProcessor extends AbstractWordOperations
 
 		return count;
 
-		/*int initialValue = -1;
+		int initialValue = -1;
 		for (String word : wordsCurrentPosition.keySet())
 		{
 			wordsCurrentPosition.put(word, initialValue);
@@ -327,9 +347,9 @@ public class VerifyProcessor extends AbstractWordOperations
 					break;
 				}
 			}
-		}*/
+		}
 
-	}
+	}*/
 
 	@SuppressWarnings("unchecked")
 	private List<Entry<TreeSet<String>, List<List<String>>>> getMatchedPagesForEachStatement(
