@@ -24,5 +24,8 @@ public class Config
 
 	public static int MATCH_WINDOW_SIZE = Integer.parseInt(CONFIG
 			.getProperty("match_window_size"));
+	
+	public static long POLITENESS_INTERVAL = Long.parseLong(CONFIG
+			.getProperty("politeness_interval"));
 
 }

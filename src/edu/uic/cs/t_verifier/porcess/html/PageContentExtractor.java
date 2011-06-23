@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.htmlparser.Node;
-import org.htmlparser.Parser;
 import org.htmlparser.filters.TagNameFilter;
 
 import edu.uic.cs.t_verifier.misc.GeneralException;
@@ -13,7 +12,7 @@ import edu.uic.cs.t_verifier.porcess.common.AbstractWordOperations;
 
 public class PageContentExtractor extends AbstractWordOperations
 {
-	private Parser parser = new Parser();
+	private PoliteParser parser = new PoliteParser();
 
 	private String extractRawPageContent(String pageUrl)
 	{

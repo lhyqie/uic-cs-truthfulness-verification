@@ -41,6 +41,6 @@ public class TestSearchKeyWordsMatcher extends TestCase
 		List<String> topicUints = new ArrayList<String>();
 		topicUints.add("won the nobel peace prize in 1991");
 
-		System.out.println(matcher.processAllTopicUnitsInStatement(topicUints));
+		System.out.println(matcher.processAllTopicUnitsInStatement(topicUints, null));
 	}
 }

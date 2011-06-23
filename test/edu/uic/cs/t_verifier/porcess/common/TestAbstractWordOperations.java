@@ -2,10 +2,8 @@ package edu.uic.cs.t_verifier.porcess.common;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 import junit.framework.TestCase;
 
@@ -52,45 +50,45 @@ public class TestAbstractWordOperations extends TestCase
 
 	}
 
-	public void testPowerset_1()
-	{
-		TreeSet<String> topicUnits = new TreeSet<String>(
-				Arrays.asList(new String[] { "a", "b", "c" }));
-
-		List<List<String>> actual = operations.powerset(topicUnits, true);
-
-		System.out.println(actual);
-		assertEquals(8, actual.size());
-		assertEquals(Arrays.asList(new String[] {}), actual.get(0));
-		assertEquals(Arrays.asList(new String[] { "a" }), actual.get(1));
-		assertEquals(Arrays.asList(new String[] { "b" }), actual.get(2));
-		assertEquals(Arrays.asList(new String[] { "c" }), actual.get(3));
-		assertEquals(Arrays.asList(new String[] { "a", "b" }), actual.get(4));
-		assertEquals(Arrays.asList(new String[] { "a", "c" }), actual.get(5));
-		assertEquals(Arrays.asList(new String[] { "b", "c" }), actual.get(6));
-		assertEquals(Arrays.asList(new String[] { "a", "b", "c" }),
-				actual.get(7));
-	}
-
-	public void testPowerset_2()
-	{
-		TreeSet<String> topicUnits = new TreeSet<String>(
-				Arrays.asList(new String[] { "a", "b", "c" }));
-
-		List<List<String>> actual = operations.powerset(topicUnits, false);
-
-		System.out.println(actual);
-		assertEquals(7, actual.size());
-		assertEquals(Arrays.asList(new String[] { "a" }), actual.get(0));
-		assertEquals(Arrays.asList(new String[] { "b" }), actual.get(1));
-		assertEquals(Arrays.asList(new String[] { "c" }), actual.get(2));
-		assertEquals(Arrays.asList(new String[] { "a", "b" }), actual.get(3));
-		assertEquals(Arrays.asList(new String[] { "a", "c" }), actual.get(4));
-		assertEquals(Arrays.asList(new String[] { "b", "c" }), actual.get(5));
-		assertEquals(Arrays.asList(new String[] { "a", "b", "c" }),
-				actual.get(6));
-
-		Collections.reverse(actual);
-		System.out.println(actual);
-	}
+//	public void testPowerset_1()
+//	{
+//		TreeSet<String> topicUnits = new TreeSet<String>(
+//				Arrays.asList(new String[] { "a", "b", "c" }));
+//
+//		List<List<String>> actual = operations.powerset(topicUnits, true);
+//
+//		System.out.println(actual);
+//		assertEquals(8, actual.size());
+//		assertEquals(Arrays.asList(new String[] {}), actual.get(0));
+//		assertEquals(Arrays.asList(new String[] { "a" }), actual.get(1));
+//		assertEquals(Arrays.asList(new String[] { "b" }), actual.get(2));
+//		assertEquals(Arrays.asList(new String[] { "c" }), actual.get(3));
+//		assertEquals(Arrays.asList(new String[] { "a", "b" }), actual.get(4));
+//		assertEquals(Arrays.asList(new String[] { "a", "c" }), actual.get(5));
+//		assertEquals(Arrays.asList(new String[] { "b", "c" }), actual.get(6));
+//		assertEquals(Arrays.asList(new String[] { "a", "b", "c" }),
+//				actual.get(7));
+//	}
+//
+//	public void testPowerset_2()
+//	{
+//		TreeSet<String> topicUnits = new TreeSet<String>(
+//				Arrays.asList(new String[] { "a", "b", "c" }));
+//
+//		List<List<String>> actual = operations.powerset(topicUnits, false);
+//
+//		System.out.println(actual);
+//		assertEquals(7, actual.size());
+//		assertEquals(Arrays.asList(new String[] { "a" }), actual.get(0));
+//		assertEquals(Arrays.asList(new String[] { "b" }), actual.get(1));
+//		assertEquals(Arrays.asList(new String[] { "c" }), actual.get(2));
+//		assertEquals(Arrays.asList(new String[] { "a", "b" }), actual.get(3));
+//		assertEquals(Arrays.asList(new String[] { "a", "c" }), actual.get(4));
+//		assertEquals(Arrays.asList(new String[] { "b", "c" }), actual.get(5));
+//		assertEquals(Arrays.asList(new String[] { "a", "b", "c" }),
+//				actual.get(6));
+//
+//		Collections.reverse(actual);
+//		System.out.println(actual);
+//	}
 }
