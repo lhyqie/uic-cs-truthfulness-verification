@@ -124,7 +124,7 @@ public class SearchKeyWordsExtractor
 
 		try
 		{
-			System.out.println(url);
+			// System.out.println(url);
 			parser.setResource(url);
 
 			// this means the input query words can't exactly match a page 
