@@ -12,7 +12,7 @@ public class TestVerifyProcessor3 extends EnhancedTestCase
 			.parseAllStatementsFromInputFiles();
 	private VerifyProcessor processor = new VerifyProcessor();
 
-	private List<String> allExpected = getAllExpected("TestVerifyProcessor1.expected");
+	private List<String> allExpected = getAllExpected("TestVerifyProcessor.expected");
 
 	private int getIndex()
 	{
