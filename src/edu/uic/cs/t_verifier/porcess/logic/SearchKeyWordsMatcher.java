@@ -230,7 +230,7 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 		{
 			LOGGER.debug(LogHelper.LOG_LAYER_ONE + "Matched a key word["
 					+ topicUnit + "] in the URL["
-					+ keyWords.getCertainPageUrl());
+					+ keyWords.getCertainPageUrl() + "]");
 		}
 
 		// TODO
