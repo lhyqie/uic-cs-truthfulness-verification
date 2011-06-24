@@ -2,6 +2,8 @@ package edu.uic.cs.t_verifier.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeSet;
@@ -106,9 +108,55 @@ public class Statement
 		return allWordsInTopicUnits;
 	}
 
-	public List<String> getAlternativeUnits()
+	public List<AlternativeUnit> getAlternativeUnits()
 	{
-		return alternativeUnits;
+		List<AlternativeUnit> result = new ArrayList<AlternativeUnit>(
+				alternativeUnits.size());
+		for (String auString : alternativeUnits)
+		{
+			result.add(new AlternativeUnit(auString));
+		}
+
+		assignWeightToAUs(result);
+
+		return result;
 	}
 
+	private void assignWeightToAUs(List<AlternativeUnit> aus)
+	{
+		Collections.sort(aus, new Comparator<AlternativeUnit>()
+		{
+			@Override
+			public int compare(AlternativeUnit au1, AlternativeUnit au2)
+			{
+				return au1.getWords().length - au2.getWords().length;
+			}
+		});
+
+		////////////////////////////////////////////////////////////////////////
+		aus.get(0).setWeight(1);
+		for (int index = 1; index < aus.size(); index++)
+		{
+			AlternativeUnit au_current = aus.get(index);
+
+			AlternativeUnit au_previous = null;
+			for (int j = 0; j < index; j++)
+			{
+				au_previous = aus.get(j);
+
+				if (Arrays.asList(au_current.getWords()).containsAll(
+						Arrays.asList(au_previous.getWords())))
+				{
+					au_current.setWeight(au_previous.getWeight() + 1);
+				}
+				else
+				{
+					if (au_current.getWeight() < au_previous.getWeight())
+					{
+						au_current.setWeight(au_previous.getWeight());
+					}
+				}
+			}
+		}
+	}
 }

@@ -23,7 +23,7 @@ public abstract class AbstractWordOperations
 	{
 		return phrase.replace("'s ", " ").replace("s' ", "s ");
 	}
-	
+
 	protected List<String> splitIntoNoneStopStemmedWords(String paragraph)
 	{
 		// remove all commas in the paragraph
@@ -36,6 +36,7 @@ public abstract class AbstractWordOperations
 		{
 			String word = (String) tokenizer.nextElement();
 			word = removeReferenceSymbol(word);
+			word = trimNoneCharactersInBothEnds(word);
 
 			if (isNoneStopWord(word))
 			{
@@ -66,6 +67,28 @@ public abstract class AbstractWordOperations
 	//		//		matcher.
 	//		return null;
 	//	}
+
+	private String trimNoneCharactersInBothEnds(String word)
+	{
+		int charBegin = 0;
+		int charEnd = word.length();
+		char[] val = word.toCharArray();
+
+		while ((charBegin < charEnd)
+				&& (!Character.isLetterOrDigit(val[charBegin])))
+		{
+			charBegin++;
+		}
+
+		while ((charBegin < charEnd)
+				&& (!Character.isLetterOrDigit(val[charEnd - 1])))
+		{
+			charEnd--;
+		}
+
+		return ((charBegin > 0) || (charEnd < word.length())) ? word.substring(
+				charBegin, charEnd) : word;
+	}
 
 	protected String stem(String word)
 	{

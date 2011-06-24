@@ -124,12 +124,13 @@ public class SearchKeyWordsExtractor
 
 		try
 		{
-			// System.out.println(url);
+			System.out.print(url);
 			parser.setResource(url);
 
 			// this means the input query words can't exactly match a page 
 			if (url.equals(parser.getURL()))
 			{
+				System.out.println(" ×");
 				return null;
 			}
 
@@ -160,8 +161,19 @@ public class SearchKeyWordsExtractor
 			List<AmbiguityEntry> ambiguityEntries = extractAmbiguityEntries(bodyContentDiv
 					.getChildren());
 
-			return new SearchKeyWords(titleString.replaceAll(" ", "_"),
-					ambiguityEntries);
+			SearchKeyWords result = new SearchKeyWords(titleString.replaceAll(
+					" ", "_"), ambiguityEntries);
+			if (result.isCertainly())
+			{
+				System.out.println(" √");
+			}
+			else
+			{
+				System.out.println(" ?");
+			}
+
+			return result;
+
 		}
 		catch (ParserException e)
 		{

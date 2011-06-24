@@ -33,4 +33,55 @@ public class TestStatement extends EnhancedTestCase
 		assertEquals(expected, actual);
 	}
 
+	public void testAssignWeightToAUs_1()
+	{
+		Statement statement = new Statement(null, null);
+		statement.addAlternativeUnit("a b c d");
+		statement.addAlternativeUnit("a b");
+		statement.addAlternativeUnit("c d");
+		statement.addAlternativeUnit("b c");
+		statement.addAlternativeUnit("a");
+		statement.addAlternativeUnit("b");
+		statement.addAlternativeUnit("c");
+
+		TreeSet<String> actual = new TreeSet<String>();
+		for (AlternativeUnit au : statement.getAlternativeUnits())
+		{
+			System.out.println(au.toString() + "_" + au.getWeight());
+			actual.add(au.toString() + "_" + au.getWeight());
+		}
+
+		TreeSet<String> expected = new TreeSet<String>(
+				Arrays.asList(new String[] { "a_1", "b_1", "c_1", "a b_2",
+						"c d_2", "b c_2", "a b c d_3" }));
+
+		assertEquals(expected, actual);
+	}
+
+	public void testAssignWeightToAUs_2()
+	{
+		Statement statement = new Statement(null, null);
+		statement.addAlternativeUnit("a b c d");
+		statement.addAlternativeUnit("a b c");
+		statement.addAlternativeUnit("b c d");
+		statement.addAlternativeUnit("a b");
+		statement.addAlternativeUnit("c d");
+		statement.addAlternativeUnit("a");
+		statement.addAlternativeUnit("b");
+		statement.addAlternativeUnit("c");
+
+		TreeSet<String> actual = new TreeSet<String>();
+		for (AlternativeUnit au : statement.getAlternativeUnits())
+		{
+			System.out.println(au.toString() + "_" + au.getWeight());
+			actual.add(au.toString() + "_" + au.getWeight());
+		}
+
+		TreeSet<String> expected = new TreeSet<String>(
+				Arrays.asList(new String[] { "a_1", "b_1", "c_1", "a b_2",
+						"c d_2", "a b c_3", "b c d_3", "a b c d_4" }));
+
+		assertEquals(expected, actual);
+	}
+
 }

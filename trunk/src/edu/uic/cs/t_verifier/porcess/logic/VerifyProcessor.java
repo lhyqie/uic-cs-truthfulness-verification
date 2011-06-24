@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 
+import edu.uic.cs.t_verifier.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.data.Statement;
 import edu.uic.cs.t_verifier.porcess.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.porcess.html.PageContentExtractor;
@@ -56,7 +57,7 @@ public class VerifyProcessor extends AbstractWordOperations
 
 		int maxScore = 0;
 		String theHighestScoredAu = null;
-		for (String au : statement.getAlternativeUnits())
+		for (AlternativeUnit au : statement.getAlternativeUnits())
 		{
 			int score = evaluateEachAlternativeUnit(au,
 					topicUnitsWithMatchedPageContentList, statement);
@@ -64,7 +65,7 @@ public class VerifyProcessor extends AbstractWordOperations
 			if (score > maxScore)
 			{
 				maxScore = score;
-				theHighestScoredAu = au;
+				theHighestScoredAu = au.toString();
 			}
 		}
 
@@ -76,7 +77,7 @@ public class VerifyProcessor extends AbstractWordOperations
 	}
 
 	private int evaluateEachAlternativeUnit(
-			String au,
+			AlternativeUnit au,
 			List<Entry<TreeSet<String>, List<List<String>>>> topicUnitsWithMatchedPageContentList,
 			Statement statement)
 	{
@@ -121,7 +122,7 @@ public class VerifyProcessor extends AbstractWordOperations
 		return score;
 	}*/
 
-	private int evaluateEachAlternativeUnitInOnePage(String au,
+	private int evaluateEachAlternativeUnitInOnePage(AlternativeUnit au,
 			TreeSet<String> topicUnits, List<List<String>> stemmedParagraphs)
 	{
 		// List<List<String>> powersetOfTopicUnits = powerset(topicUnits, false);
@@ -186,12 +187,12 @@ public class VerifyProcessor extends AbstractWordOperations
 		return new SimpleEntry<Integer, String>(maxScore, theHighestRatedAU);
 	}*/
 
-	private int countScoreForEachAlternativeUnit(String au,
+	private int countScoreForEachAlternativeUnit(AlternativeUnit au,
 			TreeSet<String> topicUnits,
 			List<Map<String, List<Integer>>> postingListOfParagraphs)
 	{
 		// AU may contains more than one word
-		String[] stemmedWordsInAu = StringUtils.split(au);
+		String[] stemmedWordsInAu = au.getWords();
 		{
 			for (int index = 0; index < stemmedWordsInAu.length; index++)
 			{
@@ -200,14 +201,14 @@ public class VerifyProcessor extends AbstractWordOperations
 		}
 
 		int finalScore = scorePage(topicUnits, postingListOfParagraphs,
-				stemmedWordsInAu, POWER_BASE_TU);
+				stemmedWordsInAu, au.getWeight(), POWER_BASE_TU);
 
 		return finalScore;
 	}
 
 	private int scorePage(TreeSet<String> topicUnits,
 			List<Map<String, List<Integer>>> postingListOfParagraphs,
-			String[] stemmedWordsInAu, int powerBase)
+			String[] stemmedWordsInAu, int auWeight, int powerBase)
 	{
 		// trying begin with the longest ones
 		//		Collections.reverse(powersetOfTopicUnits);
@@ -232,7 +233,7 @@ public class VerifyProcessor extends AbstractWordOperations
 				}
 			}*/
 			int score = matchWordsInOneParagraph(topicUnits, stemmedWordsInAu,
-					postingListOfOneParagraph, powerBase);
+					postingListOfOneParagraph, auWeight, powerBase);
 			finalScore += score;
 		}
 		return finalScore;
@@ -240,19 +241,23 @@ public class VerifyProcessor extends AbstractWordOperations
 
 	private int matchWordsInOneParagraph(TreeSet<String> topicUnits,
 			String[] stemmedWordsInAu,
-			Map<String, List<Integer>> postingListOfOneParagraph, int powerBase)
+			Map<String, List<Integer>> postingListOfOneParagraph, int auWeight,
+			int powerBase)
 	{
 		// AU must exist!
 		for (String wordInAu : stemmedWordsInAu)
 		{
+			// all the words in AU must exist in a paragraph at a same time
 			if (!postingListOfOneParagraph.containsKey(wordInAu))
 			{
 				return 0;
 			}
 		}
 
-		int numberOfTuExist = 0;
 		int frequancySumOfTus = 0;
+		// no matter how many words in AU, only count once
+		int numberOfTuExist = 0;
+
 		for (String tu : topicUnits)
 		{
 			List<Integer> postingOfTu = postingListOfOneParagraph.get(tu);
@@ -264,7 +269,9 @@ public class VerifyProcessor extends AbstractWordOperations
 			}
 		}
 
-		return (int) (frequancySumOfTus * Math.pow(powerBase, numberOfTuExist));
+		// the more weighted AU, the more accurate it is. 
+		return (int) (auWeight * frequancySumOfTus * Math.pow(powerBase,
+				numberOfTuExist));
 	}
 
 	/*private Integer matchWordsInOneParagraph(TreeSet<String> topicUnits,
@@ -367,7 +374,7 @@ public class VerifyProcessor extends AbstractWordOperations
 		{
 			String url = entry.getValue();
 
-			System.out.println(url);
+			System.out.println("> " + url);
 
 			TreeSet<String> notMatchedWordsInTopicUnits = (TreeSet<String>) allWordsInTopicUnits
 					.clone();
