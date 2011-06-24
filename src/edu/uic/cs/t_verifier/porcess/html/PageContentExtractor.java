@@ -74,7 +74,10 @@ public class PageContentExtractor extends AbstractWordOperations
 			else
 			{
 				List<String> wordsInLine = splitIntoNoneStopStemmedWords(paragraph);
-				result.add(wordsInLine);
+				if (!wordsInLine.isEmpty())
+				{
+					result.add(wordsInLine);
+				}
 				//				System.out.println(wordsInLine);
 				//				System.out.println("***********");
 			}
@@ -90,8 +93,15 @@ public class PageContentExtractor extends AbstractWordOperations
 		//				.extractRawPageContent("http://en.wikipedia.org/wiki/Continent");
 		//		System.out.println(page);
 
-		extractor
-				.extractStemmedNonStopWordsInAllParagraphs("http://en.wikipedia.org/wiki/Continent"/*"http://en.wikipedia.org/wiki/Sleepless_(2001_film)"*/);
+		// String url = "http://en.wikipedia.org/wiki/Sleepless_(2001_film)";
+		// String url = "http://en.wikipedia.org/wiki/Continent";
+		String url = "http://en.wikipedia.org/wiki/China_Airlines";
+		List<List<String>> result = extractor
+				.extractStemmedNonStopWordsInAllParagraphs(url);
+		for (List<String> paragraph : result)
+		{
+			System.out.println(paragraph);
+		}
 
 	}
 }

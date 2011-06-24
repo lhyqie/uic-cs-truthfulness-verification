@@ -12,7 +12,6 @@ public class PoliteParser extends Parser
 	@Override
 	public void setResource(String resource) throws ParserException
 	{
-		// Parser.getConnectionManager().set
 		super.setResource(resource);
 
 		try

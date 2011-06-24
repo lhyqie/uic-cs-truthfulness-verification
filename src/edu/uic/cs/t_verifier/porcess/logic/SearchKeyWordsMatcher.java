@@ -13,6 +13,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
+import edu.uic.cs.t_verifier.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.data.SearchKeyWords;
 import edu.uic.cs.t_verifier.data.SearchKeyWords.AmbiguityEntry;
 import edu.uic.cs.t_verifier.data.Statement;
@@ -97,13 +98,13 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 	public Map<String, String> matchTopicUnitsForStatement(Statement statement)
 	{
 		Collection<String> topicUnits = statement.getTopicUnits();
-		List<String> aus = statement.getAlternativeUnits();
+		List<AlternativeUnit> aus = statement.getAlternativeUnits();
 
 		return processAllTopicUnitsInStatement(topicUnits, aus);
 	}
 
 	Map<String, String> processAllTopicUnitsInStatement(
-			Collection<String> topicUnits, List<String> aus)
+			Collection<String> topicUnits, List<AlternativeUnit> aus)
 	{
 		// topic units waiting for mathcing
 		NoSubStringTreeSet topicUnitsRemovedStopWords = new NoSubStringTreeSet();
@@ -182,7 +183,7 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 
 	private List<String> findTheMostMatchedAmbiguousEntry(
 			List<AmbiguityEntry> ambiguousEntries,
-			Collection<String> otherTopicUnits, List<String> aus)
+			Collection<String> otherTopicUnits, List<AlternativeUnit> aus)
 	{
 		int maxScore = 0;
 		List<String> maxScoreUrls = new ArrayList<String>();
@@ -191,11 +192,19 @@ public class SearchKeyWordsMatcher extends AbstractWordOperations
 			int count = 0;
 			String description = ambiguityEntry.getDescription();
 			List<String> nonstopStemmedWordsInDesc = splitIntoNoneStopStemmedWords(description);
+			if (nonstopStemmedWordsInDesc.isEmpty())
+			{
+				continue;
+			}
 
 			if (otherTopicUnits.isEmpty())
 			{
 				// if there's no TUs, use AUs do the matching
-				otherTopicUnits = aus;
+				otherTopicUnits = new ArrayList<String>();
+				for (AlternativeUnit au : aus)
+				{
+					otherTopicUnits.add(au.toString());
+				}
 			}
 
 			for (String topicUnit : otherTopicUnits)
