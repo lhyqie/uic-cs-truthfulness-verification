@@ -357,13 +357,13 @@ public class TestVerifyProcessor5 extends EnhancedTestCase
 		assertEquals(allExpected.get(index), actual);
 	}
 
-	public void testProcessVerificationForEachStatement_43()
-	{
-		int index = getIndex();
-		String actual = processor
-				.processVerificationForEachStatement(allStatements.get(index));
-		assertEquals(allExpected.get(index), actual);
-	}
+//	public void testProcessVerificationForEachStatement_43()
+//	{
+//		int index = getIndex();
+//		String actual = processor
+//				.processVerificationForEachStatement(allStatements.get(index));
+//		assertEquals(allExpected.get(index), actual);
+//	}
 
 	public void testProcessVerificationForEachStatement_44()
 	{

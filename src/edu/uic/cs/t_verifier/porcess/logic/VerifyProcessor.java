@@ -260,7 +260,9 @@ public class VerifyProcessor extends AbstractWordOperations
 			}
 		}
 
-		int frequancySumOfTus = 0;
+		// TODO, using '0' means must have at least one TU
+		// '1' for AU, no matter how long the AU is, I only count once
+		int frequancySumOfTus = 1/*0*/;
 		// no matter how many words in AU, only count once
 		int numberOfTuExist = 0;
 
