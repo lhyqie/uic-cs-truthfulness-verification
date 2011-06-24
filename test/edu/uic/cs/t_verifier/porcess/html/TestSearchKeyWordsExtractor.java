@@ -7,7 +7,7 @@ import java.util.List;
 import edu.uic.cs.t_verifier.EnhancedTestCase;
 import edu.uic.cs.t_verifier.data.SearchKeyWords;
 import edu.uic.cs.t_verifier.data.SearchKeyWords.AmbiguityEntry;
-import edu.uic.cs.t_verifier.porcess.html.SearchKeyWordsExtractor;
+import edu.uic.cs.t_verifier.porcess.html.impl.SearchKeyWordsExtractor;
 
 public class TestSearchKeyWordsExtractor extends EnhancedTestCase
 {

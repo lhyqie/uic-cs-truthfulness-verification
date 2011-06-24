@@ -19,7 +19,7 @@ import edu.uic.cs.t_verifier.data.SearchKeyWords.AmbiguityEntry;
 import edu.uic.cs.t_verifier.data.Statement;
 import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.porcess.common.AbstractWordOperations;
-import edu.uic.cs.t_verifier.porcess.html.SearchKeyWordsExtractor;
+import edu.uic.cs.t_verifier.porcess.html.impl.SearchKeyWordsExtractor;
 import edu.uic.cs.t_verifier.process.words.StopWords;
 
 public class SearchKeyWordsMatcher extends AbstractWordOperations
