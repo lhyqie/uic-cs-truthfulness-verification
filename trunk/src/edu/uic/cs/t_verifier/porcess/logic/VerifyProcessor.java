@@ -1,16 +1,18 @@
 package edu.uic.cs.t_verifier.porcess.logic;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 
 import edu.uic.cs.t_verifier.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.data.Statement;
+import edu.uic.cs.t_verifier.misc.ClassFactory;
+import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.porcess.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.porcess.html.PageContentExtractor;
 
@@ -19,7 +21,9 @@ public class VerifyProcessor extends AbstractWordOperations
 	//	private static final int POWER_BASE_AU = 2;
 	private static final int POWER_BASE_TU = 10;
 	private SearchKeyWordsMatcher keyWordsMatcher = new SearchKeyWordsMatcher();
-	private PageContentExtractor pageContentExtractor = new PageContentExtractor();
+
+	private PageContentExtractor pageContentExtractor = ClassFactory
+			.getInstance(Config.PageContentExtractor_CLASS_NAME);
 
 	//	public void processVerification()
 	//	{
@@ -385,7 +389,7 @@ public class VerifyProcessor extends AbstractWordOperations
 			notMatchedWordsInTopicUnits = stemAndRemoveAllNonStopWords(notMatchedWordsInTopicUnits);
 
 			List<List<String>> stemmedNonStopWordsInAllParagraphs = pageContentExtractor
-					.extractStemmedNonStopWordsInAllParagraphs(url);
+					.extractStemmedNonStopWords(url);
 
 			result.add(new SimpleEntry<TreeSet<String>, List<List<String>>>(
 					notMatchedWordsInTopicUnits,
