@@ -28,7 +28,8 @@ public class TestStatement extends EnhancedTestCase
 		Set<String> actual = statement.getAllWordsInTopicUnits();
 		TreeSet<String> expected = new TreeSet<String>(
 				Arrays.asList(new String[] { "an", "elephant", "expectancy",
-						"five", "it", "is", "life", "of", "s", "the", "years" }));
+						"five", "it", "is", "life", "of", /*"s",*/"the",
+						"years" }));
 
 		assertEquals(expected, actual);
 	}
@@ -47,13 +48,13 @@ public class TestStatement extends EnhancedTestCase
 		TreeSet<String> actual = new TreeSet<String>();
 		for (AlternativeUnit au : statement.getAlternativeUnits())
 		{
-			System.out.println(au.toString() + "_" + au.getWeight());
-			actual.add(au.toString() + "_" + au.getWeight());
+			System.out.println(au.toString());
+			actual.add(au.toString());
 		}
 
 		TreeSet<String> expected = new TreeSet<String>(
-				Arrays.asList(new String[] { "a_1", "b_1", "c_1", "a b_2",
-						"c d_2", "b c_2", "a b c d_3" }));
+				Arrays.asList(new String[] { "a[1]", "b[1]", "c[1]", "a b[2]",
+						"c d[2]", "b c[2]", "a b c d[3]" }));
 
 		assertEquals(expected, actual);
 	}
@@ -73,13 +74,13 @@ public class TestStatement extends EnhancedTestCase
 		TreeSet<String> actual = new TreeSet<String>();
 		for (AlternativeUnit au : statement.getAlternativeUnits())
 		{
-			System.out.println(au.toString() + "_" + au.getWeight());
-			actual.add(au.toString() + "_" + au.getWeight());
+			System.out.println(au.toString());
+			actual.add(au.toString());
 		}
 
 		TreeSet<String> expected = new TreeSet<String>(
-				Arrays.asList(new String[] { "a_1", "b_1", "c_1", "a b_2",
-						"c d_2", "a b c_3", "b c d_3", "a b c d_4" }));
+				Arrays.asList(new String[] { "a[1]", "b[1]", "c[1]", "a b[2]",
+						"c d[2]", "a b c[3]", "b c d[3]", "a b c d[4]" }));
 
 		assertEquals(expected, actual);
 	}
