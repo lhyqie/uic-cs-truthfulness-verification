@@ -13,8 +13,8 @@ public class SegmentContentExtractor extends AbstractPageContentExtractor
 	{
 		String rawContent = extractRawPageContent(pageUrl);
 
-		System.out.println(rawContent);
-		System.out.println("=================================================");
+		//		System.out.println(rawContent);
+		//		System.out.println("=================================================");
 
 		String[] segments = rawContent.split("\t*\n\t*\n");
 
