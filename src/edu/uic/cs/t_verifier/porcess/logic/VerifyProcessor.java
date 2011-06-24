@@ -66,10 +66,12 @@ public class VerifyProcessor extends AbstractWordOperations
 			int score = evaluateEachAlternativeUnit(au,
 					topicUnitsWithMatchedPageContentList, statement);
 
+			System.out.println("$ " + au + "=" + score);
+
 			if (score > maxScore)
 			{
 				maxScore = score;
-				theHighestScoredAu = au.toString();
+				theHighestScoredAu = au.getString();
 			}
 		}
 
@@ -378,14 +380,15 @@ public class VerifyProcessor extends AbstractWordOperations
 		{
 			String url = entry.getValue();
 
-			System.out.println("> " + url);
-
 			TreeSet<String> notMatchedWordsInTopicUnits = (TreeSet<String>) allWordsInTopicUnits
 					.clone();
 			for (String matchedTopicUnit : StringUtils.split(entry.getKey()))
 			{
 				notMatchedWordsInTopicUnits.remove(matchedTopicUnit);
 			}
+
+			System.out.println("> " + url + notMatchedWordsInTopicUnits);
+
 			notMatchedWordsInTopicUnits = stemAndRemoveAllNonStopWords(notMatchedWordsInTopicUnits);
 
 			List<List<String>> stemmedNonStopWordsInAllParagraphs = pageContentExtractor

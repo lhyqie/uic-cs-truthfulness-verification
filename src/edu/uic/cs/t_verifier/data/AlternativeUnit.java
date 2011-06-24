@@ -17,7 +17,7 @@ public class AlternativeUnit
 	@Override
 	public String toString()
 	{
-		return auString;
+		return auString + "[" + weight + "]";
 	}
 
 	public String[] getWords()
@@ -33,6 +33,11 @@ public class AlternativeUnit
 	public int getWeight()
 	{
 		return weight;
+	}
+
+	public String getString()
+	{
+		return auString;
 	}
 
 }

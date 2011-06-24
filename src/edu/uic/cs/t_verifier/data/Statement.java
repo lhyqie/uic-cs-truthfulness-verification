@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.porcess.common.AbstractWordOperations;
 
-public class Statement
+public class Statement extends AbstractWordOperations
 {
 	private static final int DEFAULT_ALTERNATIVE_UNIT_NUMBER = 5;
 
@@ -32,11 +32,13 @@ public class Statement
 
 		if (topicUnitLeft != null)
 		{
-			this.topicUnitLeft = topicUnitLeft.toLowerCase(Locale.US);
+			this.topicUnitLeft = removeSaxonGenitive(topicUnitLeft
+					.toLowerCase(Locale.US));
 		}
 		if (topicUnitRight != null)
 		{
-			this.topicUnitRight = topicUnitRight.toLowerCase(Locale.US);
+			this.topicUnitRight = removeSaxonGenitive(topicUnitRight
+					.toLowerCase(Locale.US));
 		}
 	}
 
