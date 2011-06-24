@@ -136,27 +136,36 @@ public class Statement extends AbstractWordOperations
 		});
 
 		////////////////////////////////////////////////////////////////////////
-		aus.get(0).setWeight(1);
-		for (int index = 1; index < aus.size(); index++)
+		int initialLength = aus.get(0).getWords().length;
+		for (int index = 0; index < aus.size(); index++)
 		{
 			AlternativeUnit au_current = aus.get(index);
+			if (au_current.getWords().length == initialLength)
+			{
+				au_current.setWeight(1);
+				continue;
+			}
 
 			AlternativeUnit au_previous = null;
 			for (int j = 0; j < index; j++)
 			{
 				au_previous = aus.get(j);
+				if (au_current.getWords().length == au_previous.getWords().length)
+				{
+					continue;
+				}
 
 				if (Arrays.asList(au_current.getWords()).containsAll(
 						Arrays.asList(au_previous.getWords())))
 				{
-					au_current.setWeight(au_previous.getWeight() + 1);
-				}
-				else
-				{
-					if (au_current.getWeight() < au_previous.getWeight())
+					if (au_current.getWeight() <= au_previous.getWeight())
 					{
-						au_current.setWeight(au_previous.getWeight());
+						au_current.setWeight(au_previous.getWeight() + 1);
 					}
+				}
+				else if (au_current.getWeight() < au_previous.getWeight())
+				{
+					au_current.setWeight(au_previous.getWeight());
 				}
 			}
 		}
