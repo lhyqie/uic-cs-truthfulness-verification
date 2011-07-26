@@ -17,7 +17,7 @@ public class TestStopWords extends TestCase
 	public void testTrimStopWordsInBothSides_2()
 	{
 		String orginal = "this is the only way";
-		String expected = "";
+		String expected = "only way";
 		String actual = StopWords.trimStopWordsInBothSides(orginal);
 
 		assertEquals(expected, actual);
@@ -26,7 +26,7 @@ public class TestStopWords extends TestCase
 	public void testTrimStopWordsInBothSides_3()
 	{
 		String orginal = " He is the leading actor in";
-		String expected = "leading actor";
+		String expected = "He is the leading actor";
 		String actual = StopWords.trimStopWordsInBothSides(orginal);
 
 		assertEquals(expected, actual);
@@ -35,7 +35,7 @@ public class TestStopWords extends TestCase
 	public void testTrimStopWordsInBothSides_4()
 	{
 		String orginal = "he is not the leader";
-		String expected = "leader";
+		String expected = "he is not the leader";
 		String actual = StopWords.trimStopWordsInBothSides(orginal);
 
 		assertEquals(expected, actual);
@@ -44,7 +44,7 @@ public class TestStopWords extends TestCase
 	public void testTrimStopWordsInBothSides_5()
 	{
 		String orginal = "father  he is not";
-		String expected = "father";
+		String expected = "father he";
 		String actual = StopWords.trimStopWordsInBothSides(orginal);
 
 		assertEquals(expected, actual);
